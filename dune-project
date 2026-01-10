@@ -6,7 +6,7 @@
 (source
   (github syaiful6/passe))
 
-(license MIT)
+(license ISC)
 
 (authors
   "Syaiful Bahri <syai.bahri6@gmail.com>")
