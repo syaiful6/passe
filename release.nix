@@ -33,6 +33,7 @@ let
 
   ocamlPackageSets = [
     "ocamlPackages"
+    "ocamlPackages_4_14"
     "ocamlPackages_5_4"
     "ocamlPackages_5_3"
     "ocamlPackages_5_2"

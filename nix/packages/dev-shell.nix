@@ -5,10 +5,12 @@
   python3,
 }:
 let
-  pythonWithPackages = python3.withPackages (ps: with ps; [
-    bcrypt
-    argon2-cffi
-  ]);
+  pythonWithPackages = python3.withPackages (
+    ps: with ps; [
+      bcrypt
+      argon2-cffi
+    ]
+  );
 in
 mkShell {
   inputsFrom = with ocamlPackages; [

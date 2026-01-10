@@ -1,0 +1,40 @@
+name: "Nix build"
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  format:
+    name: Check code formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: "Check formatting"
+        run: nix-build release.nix -A checks.formatting
+
+  build-and-test:
+    name: Build on OCaml ${{ matrix.ocaml-version }}
+    runs-on: ubuntu-latest
+    needs: format
+    strategy:
+      fail-fast: false
+      matrix:
+        build-config:
+          - { ocamlPackages: "ocamlPackages_4_14", doCheck: false }
+          - { ocamlPackages: "ocamlPackages_5_2", doCheck: false }
+          - { ocamlPackages: "ocamlPackages_5_4", doCheck: false }
+          - { ocamlPackages: "ocamlPackages_5_3", doCheck: true }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: "Build and test"
+        run: nix-build release.nix -A ${{ matrix.build-config.ocamlPackages }} --arg doCheck ${{ matrix.build-config.doCheck }}
