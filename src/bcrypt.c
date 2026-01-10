@@ -47,8 +47,8 @@ static int decode_base64(u_int8_t *, size_t, const char *);
 /*
  * the core bcrypt function
  */
-int password_bcrypt_hashpass(const char *key, const char *salt, char *encrypted,
-                             size_t encryptedlen) {
+int passe_bcrypt_hashpass(const char *key, const char *salt, char *encrypted,
+                          size_t encryptedlen) {
   blf_ctx state;
   u_int32_t rounds, i, k;
   u_int16_t j;
@@ -114,23 +114,23 @@ int password_bcrypt_hashpass(const char *key, const char *salt, char *encrypted,
   salt_len = BCRYPT_MAXSALT;
 
   /* Setting up S-Boxes and Subkeys */
-  caml_password_blowfish_initstate(&state);
-  caml_password_blowfish_expandstate(&state, csalt, salt_len, (u_int8_t *)key,
-                                     key_len);
+  caml_passe_blowfish_initstate(&state);
+  caml_passe_blowfish_expandstate(&state, csalt, salt_len, (u_int8_t *)key,
+                                  key_len);
   for (k = 0; k < rounds; k++) {
-    caml_password_blowfish_expand0state(&state, (u_int8_t *)key, key_len);
-    caml_password_blowfish_expand0state(&state, csalt, salt_len);
+    caml_passe_blowfish_expand0state(&state, (u_int8_t *)key, key_len);
+    caml_passe_blowfish_expand0state(&state, csalt, salt_len);
   }
 
   /* This can be precomputed later */
   j = 0;
   for (i = 0; i < BCRYPT_WORDS; i++)
     cdata[i] =
-        caml_password_blowfish_stream2word(ciphertext, 4 * BCRYPT_WORDS, &j);
+        caml_passe_blowfish_stream2word(ciphertext, 4 * BCRYPT_WORDS, &j);
 
   /* Now do the encryption */
   for (k = 0; k < 64; k++)
-    password_blf_enc(&state, cdata, BCRYPT_WORDS / 2);
+    passe_blf_enc(&state, cdata, BCRYPT_WORDS / 2);
 
   for (i = 0; i < BCRYPT_WORDS; i++) {
     ciphertext[4 * i + 3] = cdata[i] & 0xff;
@@ -143,8 +143,8 @@ int password_bcrypt_hashpass(const char *key, const char *salt, char *encrypted,
   }
 
   snprintf(encrypted, 8, "$2%c$%2.2u$", minor, logr);
-  password_encode_base64(encrypted + 7, csalt, BCRYPT_MAXSALT);
-  password_encode_base64(encrypted + 7 + 22, ciphertext, 4 * BCRYPT_WORDS - 1);
+  passe_encode_base64(encrypted + 7, csalt, BCRYPT_MAXSALT);
+  passe_encode_base64(encrypted + 7 + 22, ciphertext, 4 * BCRYPT_WORDS - 1);
   explicit_bzero(&state, sizeof(state));
   explicit_bzero(ciphertext, sizeof(ciphertext));
   explicit_bzero(csalt, sizeof(csalt));
@@ -218,7 +218,7 @@ static int decode_base64(u_int8_t *buffer, size_t len, const char *b64data) {
  * Turn len bytes of data into base64 encoded data.
  * This works without = padding.
  */
-int password_encode_base64(char *b64buffer, const u_int8_t *data, size_t len) {
+int passe_encode_base64(char *b64buffer, const u_int8_t *data, size_t len) {
   u_int8_t *bp = (u_int8_t *)b64buffer;
   const u_int8_t *p = data;
   u_int8_t c1, c2;

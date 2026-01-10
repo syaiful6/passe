@@ -252,10 +252,10 @@ static const char *decode_decimal(const char *str, unsigned long *v) {
  * output length must be in the allowed ranges defined in argon2.h.
  *
  * The ctx struct must contain buffers large enough to hold the salt and pwd
- * when it is fed into decode_string.
+ * when it is fed into passe_decode_string.
  */
 
-int decode_string(argon2_context *ctx, const char *str, argon2_type type) {
+int passe_decode_string(argon2_context *ctx, const char *str, argon2_type type) {
 
 /* check for prefix */
 #define CC(prefix)                                                             \
@@ -318,7 +318,7 @@ int decode_string(argon2_context *ctx, const char *str, argon2_type type) {
     const char* type_string;
 
     /* We should start with the argon2_type we are using */
-    type_string = argon2_type2string(type, 0);
+    type_string = passe_argon2_type2string(type, 0);
     if (!type_string) {
         return ARGON2_INCORRECT_TYPE;
     }
@@ -353,7 +353,7 @@ int decode_string(argon2_context *ctx, const char *str, argon2_type type) {
     ctx->flags = ARGON2_DEFAULT_FLAGS;
 
     /* On return, must have valid context */
-    validation_result = validate_inputs(ctx);
+    validation_result = passe_validate_inputs(ctx);
     if (validation_result != ARGON2_OK) {
         return validation_result;
     }
@@ -370,7 +370,7 @@ int decode_string(argon2_context *ctx, const char *str, argon2_type type) {
 #undef BIN
 }
 
-int encode_string(char *dst, size_t dst_len, argon2_context *ctx,
+int passe_encode_string(char *dst, size_t dst_len, argon2_context *ctx,
                   argon2_type type) {
 #define SS(str)                                                                \
     do {                                                                       \
@@ -400,8 +400,8 @@ int encode_string(char *dst, size_t dst_len, argon2_context *ctx,
         dst_len -= sb_len;                                                     \
     } while ((void)0, 0)
 
-    const char* type_string = argon2_type2string(type, 0);
-    int validation_result = validate_inputs(ctx);
+    const char* type_string = passe_argon2_type2string(type, 0);
+    int validation_result = passe_validate_inputs(ctx);
 
     if (!type_string) {
       return ARGON2_ENCODING_FAIL;
@@ -437,7 +437,7 @@ int encode_string(char *dst, size_t dst_len, argon2_context *ctx,
 #undef SB
 }
 
-size_t b64len(uint32_t len) {
+size_t passe_b64len(uint32_t len) {
     size_t olen = ((size_t)len / 3) << 2;
 
     switch (len % 3) {
@@ -452,7 +452,7 @@ size_t b64len(uint32_t len) {
     return olen;
 }
 
-size_t numlen(uint32_t num) {
+size_t passe_numlen(uint32_t num) {
     size_t len = 1;
     while (num >= 10) {
         ++len;

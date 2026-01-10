@@ -44,10 +44,13 @@ external argon2id_hash_encoded_with_salt_stub :
   -> string
   -> string
   -> string
-  = "argon2id_hash_encoded_with_salt_stub_bytecode"
-    "argon2id_hash_encoded_with_salt_stub"
+  = "passe_argon2id_hash_encoded_with_salt_stub"
 
-external argon2id_verify_stub : string -> string -> int = "argon2id_verify_stub"
+external argon2id_verify_stub :
+   string
+  -> string
+  -> int
+  = "passe_argon2id_verify_stub"
 
 let validate_params params =
   if params.t_cost < min_time_cost || params.t_cost > max_time_cost

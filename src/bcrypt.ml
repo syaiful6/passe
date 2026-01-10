@@ -45,9 +45,9 @@ external bcrypt_hash_stub :
    string
   -> string
   -> string
-  = "password_bcrypt_hashpass_stub"
+  = "passe_bcrypt_hashpass_stub"
 
-external bcrypt_base64_encode : string -> string = "password_encode_base64_stub"
+external bcrypt_base64_encode : string -> string = "passe_encode_base64_stub"
 
 let _hash_password ~salt pswd =
   if String.length pswd > 72

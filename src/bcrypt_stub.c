@@ -4,14 +4,14 @@
 #include <caml/memory.h>
 #include <caml/mlvalues.h>
 
-CAMLprim value password_bcrypt_hashpass_stub(value key, value salt) {
+CAMLprim value passe_bcrypt_hashpass_stub(value key, value salt) {
   CAMLparam2(key, salt);
   CAMLlocal1(result);
   char encrypted[BCRYPT_HASHSPACE];
   int ret;
 
-  ret = password_bcrypt_hashpass(String_val(key), String_val(salt), encrypted,
-                                 sizeof(encrypted));
+  ret = passe_bcrypt_hashpass(String_val(key), String_val(salt), encrypted,
+                              sizeof(encrypted));
   if (ret != 0) {
     caml_failwith("bcrypt_hashpass failed");
   }
@@ -21,7 +21,7 @@ CAMLprim value password_bcrypt_hashpass_stub(value key, value salt) {
   CAMLreturn(result);
 }
 
-CAMLprim value password_encode_base64_stub(value src) {
+CAMLprim value passe_encode_base64_stub(value src) {
   CAMLparam1(src);
   CAMLlocal1(result);
   size_t src_len = caml_string_length(src);
@@ -32,7 +32,7 @@ CAMLprim value password_encode_base64_stub(value src) {
   }
 
   int ret =
-      password_encode_base64(dest, (const u_int8_t *)String_val(src), src_len);
+      passe_encode_base64(dest, (const u_int8_t *)String_val(src), src_len);
   if (ret != 0) {
     free(dest);
     caml_failwith("encode_base64 failed");
