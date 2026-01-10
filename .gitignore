@@ -2,6 +2,7 @@ _opam
 _build
 .merlin
 *.install
+.clangd
 
 # Mac OS
 .DS_Store

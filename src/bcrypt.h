@@ -33,6 +33,6 @@ typedef uint64_t u_int64_t;
 #define BCRYPT_SALTSPACE (7 + (BCRYPT_MAXSALT * 4 + 2) / 3 + 1)
 #define BCRYPT_HASHSPACE 61
 
-int password_bcrypt_hashpass(const char *key, const char *salt, char *encrypted,
-                             size_t encryptedlen);
-int password_encode_base64(char *, const u_int8_t *, size_t);
+int passe_bcrypt_hashpass(const char *key, const char *salt, char *encrypted,
+                          size_t encryptedlen);
+int passe_encode_base64(char *, const u_int8_t *, size_t);

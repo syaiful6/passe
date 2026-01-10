@@ -22,7 +22,7 @@
 #include <windows.h>
 #endif
 
-int argon2_thread_create(argon2_thread_handle_t *handle,
+int passe_argon2_thread_create(argon2_thread_handle_t *handle,
                          argon2_thread_func_t func, void *args) {
     if (NULL == handle || func == NULL) {
         return -1;
@@ -35,7 +35,7 @@ int argon2_thread_create(argon2_thread_handle_t *handle,
 #endif
 }
 
-int argon2_thread_join(argon2_thread_handle_t handle) {
+int passe_argon2_thread_join(argon2_thread_handle_t handle) {
 #if defined(_WIN32)
     if (WaitForSingleObject((HANDLE)handle, INFINITE) == WAIT_OBJECT_0) {
         return CloseHandle((HANDLE)handle) != 0 ? 0 : -1;
@@ -46,7 +46,7 @@ int argon2_thread_join(argon2_thread_handle_t handle) {
 #endif
 }
 
-void argon2_thread_exit(void) {
+void passe_argon2_thread_exit(void) {
 #if defined(_WIN32)
     _endthreadex(0);
 #else

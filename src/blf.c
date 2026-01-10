@@ -60,7 +60,7 @@
 
 #define BLFRND(s, p, i, j, n) (i ^= F(s, j) ^ (p)[n])
 
-void caml_password_blowfish_encipher(blf_ctx *c, u_int32_t *x) {
+void caml_passe_blowfish_encipher(blf_ctx *c, u_int32_t *x) {
   u_int32_t Xl;
   u_int32_t Xr;
   u_int32_t *s = c->S[0];
@@ -91,7 +91,7 @@ void caml_password_blowfish_encipher(blf_ctx *c, u_int32_t *x) {
   x[1] = Xl;
 }
 
-void caml_password_blowfish_decipher(blf_ctx *c, u_int32_t *x) {
+void caml_passe_blowfish_decipher(blf_ctx *c, u_int32_t *x) {
   u_int32_t Xl;
   u_int32_t Xr;
   u_int32_t *s = c->S[0];
@@ -122,7 +122,7 @@ void caml_password_blowfish_decipher(blf_ctx *c, u_int32_t *x) {
   x[1] = Xl;
 }
 
-void caml_password_blowfish_initstate(blf_ctx *c) {
+void caml_passe_blowfish_initstate(blf_ctx *c) {
   /* P-box and S-box tables initialized with digits of Pi */
 
   static const blf_ctx initstate =
@@ -307,9 +307,9 @@ void caml_password_blowfish_initstate(blf_ctx *c) {
   *c = initstate;
 }
 
-u_int32_t caml_password_blowfish_stream2word(const u_int8_t *data,
-                                             u_int16_t databytes,
-                                             u_int16_t *current) {
+u_int32_t caml_passe_blowfish_stream2word(const u_int8_t *data,
+                                          u_int16_t databytes,
+                                          u_int16_t *current) {
   u_int8_t i;
   u_int16_t j;
   u_int32_t temp;
@@ -327,8 +327,8 @@ u_int32_t caml_password_blowfish_stream2word(const u_int8_t *data,
   return temp;
 }
 
-void caml_password_blowfish_expand0state(blf_ctx *c, const u_int8_t *key,
-                                         u_int16_t keybytes) {
+void caml_passe_blowfish_expand0state(blf_ctx *c, const u_int8_t *key,
+                                      u_int16_t keybytes) {
   u_int16_t i;
   u_int16_t j;
   u_int16_t k;
@@ -338,7 +338,7 @@ void caml_password_blowfish_expand0state(blf_ctx *c, const u_int8_t *key,
   j = 0;
   for (i = 0; i < BLF_N + 2; i++) {
     /* Extract 4 int8 to 1 int32 from keystream */
-    temp = caml_password_blowfish_stream2word(key, keybytes, &j);
+    temp = caml_passe_blowfish_stream2word(key, keybytes, &j);
     c->P[i] = c->P[i] ^ temp;
   }
 
@@ -346,7 +346,7 @@ void caml_password_blowfish_expand0state(blf_ctx *c, const u_int8_t *key,
   data[0] = 0x00000000;
   data[1] = 0x00000000;
   for (i = 0; i < BLF_N + 2; i += 2) {
-    caml_password_blowfish_encipher(c, data);
+    caml_passe_blowfish_encipher(c, data);
 
     c->P[i] = data[0];
     c->P[i + 1] = data[1];
@@ -354,7 +354,7 @@ void caml_password_blowfish_expand0state(blf_ctx *c, const u_int8_t *key,
 
   for (i = 0; i < 4; i++) {
     for (k = 0; k < 256; k += 2) {
-      caml_password_blowfish_encipher(c, data);
+      caml_passe_blowfish_encipher(c, data);
 
       c->S[i][k] = data[0];
       c->S[i][k + 1] = data[1];
@@ -362,10 +362,9 @@ void caml_password_blowfish_expand0state(blf_ctx *c, const u_int8_t *key,
   }
 }
 
-void caml_password_blowfish_expandstate(blf_ctx *c, const u_int8_t *data,
-                                        u_int16_t databytes,
-                                        const u_int8_t *key,
-                                        u_int16_t keybytes) {
+void caml_passe_blowfish_expandstate(blf_ctx *c, const u_int8_t *data,
+                                     u_int16_t databytes, const u_int8_t *key,
+                                     u_int16_t keybytes) {
   u_int16_t i;
   u_int16_t j;
   u_int16_t k;
@@ -375,7 +374,7 @@ void caml_password_blowfish_expandstate(blf_ctx *c, const u_int8_t *data,
   j = 0;
   for (i = 0; i < BLF_N + 2; i++) {
     /* Extract 4 int8 to 1 int32 from keystream */
-    temp = caml_password_blowfish_stream2word(key, keybytes, &j);
+    temp = caml_passe_blowfish_stream2word(key, keybytes, &j);
     c->P[i] = c->P[i] ^ temp;
   }
 
@@ -383,9 +382,9 @@ void caml_password_blowfish_expandstate(blf_ctx *c, const u_int8_t *data,
   d[0] = 0x00000000;
   d[1] = 0x00000000;
   for (i = 0; i < BLF_N + 2; i += 2) {
-    d[0] ^= caml_password_blowfish_stream2word(data, databytes, &j);
-    d[1] ^= caml_password_blowfish_stream2word(data, databytes, &j);
-    caml_password_blowfish_encipher(c, d);
+    d[0] ^= caml_passe_blowfish_stream2word(data, databytes, &j);
+    d[1] ^= caml_passe_blowfish_stream2word(data, databytes, &j);
+    caml_passe_blowfish_encipher(c, d);
 
     c->P[i] = d[0];
     c->P[i + 1] = d[1];
@@ -393,9 +392,9 @@ void caml_password_blowfish_expandstate(blf_ctx *c, const u_int8_t *data,
 
   for (i = 0; i < 4; i++) {
     for (k = 0; k < 256; k += 2) {
-      d[0] ^= caml_password_blowfish_stream2word(data, databytes, &j);
-      d[1] ^= caml_password_blowfish_stream2word(data, databytes, &j);
-      caml_password_blowfish_encipher(c, d);
+      d[0] ^= caml_passe_blowfish_stream2word(data, databytes, &j);
+      d[1] ^= caml_passe_blowfish_stream2word(data, databytes, &j);
+      caml_passe_blowfish_encipher(c, d);
 
       c->S[i][k] = d[0];
       c->S[i][k + 1] = d[1];
@@ -403,37 +402,37 @@ void caml_password_blowfish_expandstate(blf_ctx *c, const u_int8_t *data,
   }
 }
 
-void password_blf_key(blf_ctx *c, const u_int8_t *k, u_int16_t len) {
+void passe_blf_key(blf_ctx *c, const u_int8_t *k, u_int16_t len) {
   /* Initialize S-boxes and subkeys with Pi */
-  caml_password_blowfish_initstate(c);
+  caml_passe_blowfish_initstate(c);
 
   /* Transform S-boxes and subkeys with key */
-  caml_password_blowfish_expand0state(c, k, len);
+  caml_passe_blowfish_expand0state(c, k, len);
 }
 
-void password_blf_enc(blf_ctx *c, u_int32_t *data, u_int16_t blocks) {
+void passe_blf_enc(blf_ctx *c, u_int32_t *data, u_int16_t blocks) {
   u_int32_t *d;
   u_int16_t i;
 
   d = data;
   for (i = 0; i < blocks; i++) {
-    caml_password_blowfish_encipher(c, d);
+    caml_passe_blowfish_encipher(c, d);
     d += 2;
   }
 }
 
-void password_blf_dec(blf_ctx *c, u_int32_t *data, u_int16_t blocks) {
+void passe_blf_dec(blf_ctx *c, u_int32_t *data, u_int16_t blocks) {
   u_int32_t *d;
   u_int16_t i;
 
   d = data;
   for (i = 0; i < blocks; i++) {
-    caml_password_blowfish_decipher(c, d);
+    caml_passe_blowfish_decipher(c, d);
     d += 2;
   }
 }
 
-void password_blf_ecb_encrypt(blf_ctx *c, u_int8_t *data, u_int32_t len) {
+void passe_blf_ecb_encrypt(blf_ctx *c, u_int8_t *data, u_int32_t len) {
   u_int32_t l, r, d[2];
   u_int32_t i;
 
@@ -442,7 +441,7 @@ void password_blf_ecb_encrypt(blf_ctx *c, u_int8_t *data, u_int32_t len) {
     r = data[4] << 24 | data[5] << 16 | data[6] << 8 | data[7];
     d[0] = l;
     d[1] = r;
-    caml_password_blowfish_encipher(c, d);
+    caml_passe_blowfish_encipher(c, d);
     l = d[0];
     r = d[1];
     data[0] = l >> 24 & 0xff;
@@ -457,7 +456,7 @@ void password_blf_ecb_encrypt(blf_ctx *c, u_int8_t *data, u_int32_t len) {
   }
 }
 
-void password_blf_ecb_decrypt(blf_ctx *c, u_int8_t *data, u_int32_t len) {
+void passe_blf_ecb_decrypt(blf_ctx *c, u_int8_t *data, u_int32_t len) {
   u_int32_t l, r, d[2];
   u_int32_t i;
 
@@ -466,7 +465,7 @@ void password_blf_ecb_decrypt(blf_ctx *c, u_int8_t *data, u_int32_t len) {
     r = data[4] << 24 | data[5] << 16 | data[6] << 8 | data[7];
     d[0] = l;
     d[1] = r;
-    caml_password_blowfish_decipher(c, d);
+    caml_passe_blowfish_decipher(c, d);
     l = d[0];
     r = d[1];
     data[0] = l >> 24 & 0xff;
@@ -481,8 +480,8 @@ void password_blf_ecb_decrypt(blf_ctx *c, u_int8_t *data, u_int32_t len) {
   }
 }
 
-void password_blf_cbc_encrypt(blf_ctx *c, u_int8_t *iv, u_int8_t *data,
-                              u_int32_t len) {
+void passe_blf_cbc_encrypt(blf_ctx *c, u_int8_t *iv, u_int8_t *data,
+                           u_int32_t len) {
   u_int32_t l, r, d[2];
   u_int32_t i, j;
 
@@ -493,7 +492,7 @@ void password_blf_cbc_encrypt(blf_ctx *c, u_int8_t *iv, u_int8_t *data,
     r = data[4] << 24 | data[5] << 16 | data[6] << 8 | data[7];
     d[0] = l;
     d[1] = r;
-    caml_password_blowfish_encipher(c, d);
+    caml_passe_blowfish_encipher(c, d);
     l = d[0];
     r = d[1];
     data[0] = l >> 24 & 0xff;
@@ -509,8 +508,8 @@ void password_blf_cbc_encrypt(blf_ctx *c, u_int8_t *iv, u_int8_t *data,
   }
 }
 
-void password_blf_cbc_decrypt(blf_ctx *c, u_int8_t *iva, u_int8_t *data,
-                              u_int32_t len) {
+void passe_blf_cbc_decrypt(blf_ctx *c, u_int8_t *iva, u_int8_t *data,
+                           u_int32_t len) {
   u_int32_t l, r, d[2];
   u_int8_t *iv;
   u_int32_t i, j;
@@ -522,7 +521,7 @@ void password_blf_cbc_decrypt(blf_ctx *c, u_int8_t *iva, u_int8_t *data,
     r = data[4] << 24 | data[5] << 16 | data[6] << 8 | data[7];
     d[0] = l;
     d[1] = r;
-    caml_password_blowfish_decipher(c, d);
+    caml_passe_blowfish_decipher(c, d);
     l = d[0];
     r = d[1];
     data[0] = l >> 24 & 0xff;
@@ -542,7 +541,7 @@ void password_blf_cbc_decrypt(blf_ctx *c, u_int8_t *iva, u_int8_t *data,
   r = data[4] << 24 | data[5] << 16 | data[6] << 8 | data[7];
   d[0] = l;
   d[1] = r;
-  caml_password_blowfish_decipher(c, d);
+  caml_passe_blowfish_decipher(c, d);
   l = d[0];
   r = d[1];
   data[0] = l >> 24 & 0xff;

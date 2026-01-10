@@ -60,27 +60,26 @@ typedef struct BlowfishContext {
  *    Blowfish_expand0state( state, key, keylen )
  */
 
-void caml_password_blowfish_encipher(blf_ctx *, u_int32_t *);
-void caml_password_blowfish_decipher(blf_ctx *, u_int32_t *);
-void caml_password_blowfish_initstate(blf_ctx *);
-void caml_password_blowfish_expand0state(blf_ctx *, const u_int8_t *,
-                                         u_int16_t);
-void caml_password_blowfish_expandstate(blf_ctx *, const u_int8_t *, u_int16_t,
-                                        const u_int8_t *, u_int16_t);
+void caml_passe_blowfish_encipher(blf_ctx *, u_int32_t *);
+void caml_passe_blowfish_decipher(blf_ctx *, u_int32_t *);
+void caml_passe_blowfish_initstate(blf_ctx *);
+void caml_passe_blowfish_expand0state(blf_ctx *, const u_int8_t *, u_int16_t);
+void caml_passe_blowfish_expandstate(blf_ctx *, const u_int8_t *, u_int16_t,
+                                     const u_int8_t *, u_int16_t);
 
 /* Standard Blowfish */
 
-void password_blf_key(blf_ctx *, const u_int8_t *, u_int16_t);
-void password_blf_enc(blf_ctx *, u_int32_t *, u_int16_t);
-void password_blf_dec(blf_ctx *, u_int32_t *, u_int16_t);
+void passe_blf_key(blf_ctx *, const u_int8_t *, u_int16_t);
+void passe_blf_enc(blf_ctx *, u_int32_t *, u_int16_t);
+void passe_blf_dec(blf_ctx *, u_int32_t *, u_int16_t);
 
 /* Converts u_int8_t to u_int32_t */
-u_int32_t caml_password_blowfish_stream2word(const u_int8_t *, u_int16_t,
-                                             u_int16_t *);
+u_int32_t caml_passe_blowfish_stream2word(const u_int8_t *, u_int16_t,
+                                          u_int16_t *);
 
-void password_blf_ecb_encrypt(blf_ctx *, u_int8_t *, u_int32_t);
-void password_blf_ecb_decrypt(blf_ctx *, u_int8_t *, u_int32_t);
+void passe_blf_ecb_encrypt(blf_ctx *, u_int8_t *, u_int32_t);
+void passe_blf_ecb_decrypt(blf_ctx *, u_int8_t *, u_int32_t);
 
-void password_blf_cbc_encrypt(blf_ctx *, u_int8_t *, u_int8_t *, u_int32_t);
-void password_blf_cbc_decrypt(blf_ctx *, u_int8_t *, u_int8_t *, u_int32_t);
+void passe_blf_cbc_encrypt(blf_ctx *, u_int8_t *, u_int8_t *, u_int32_t);
+void passe_blf_cbc_decrypt(blf_ctx *, u_int8_t *, u_int8_t *, u_int32_t);
 #endif

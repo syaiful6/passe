@@ -7,7 +7,7 @@
 #define MAX_ENCODED_LEN 512
 
 /* Hash a password with argon2id with provided salt */
-CAMLprim value argon2id_hash_encoded_with_salt_stub(
+CAMLprim value passe_argon2id_hash_encoded_with_salt_stub(
     value t_cost, value m_cost, value parallelism, value pwd, value salt) {
   CAMLparam5(t_cost, m_cost, parallelism, pwd, salt);
   CAMLlocal1(result);
@@ -26,8 +26,9 @@ CAMLprim value argon2id_hash_encoded_with_salt_stub(
   /* Allocate buffer for encoded hash */
   char encoded[MAX_ENCODED_LEN];
 
-  int ret = argon2id_hash_encoded(t, m, p, password, pwdlen, salt_bytes,
-                                  saltlen, hashlen, encoded, MAX_ENCODED_LEN);
+  int ret = passe_argon2id_hash_encoded(t, m, p, password, pwdlen, salt_bytes,
+                                        saltlen, hashlen, encoded,
+                                        MAX_ENCODED_LEN);
 
   if (ret != ARGON2_OK) {
     result = caml_alloc_string(0);
@@ -39,14 +40,14 @@ CAMLprim value argon2id_hash_encoded_with_salt_stub(
 }
 
 /* Verify a password against an argon2id encoded hash */
-CAMLprim value argon2id_verify_stub(value encoded, value pwd) {
+CAMLprim value passe_argon2id_verify_stub(value encoded, value pwd) {
   CAMLparam2(encoded, pwd);
 
   const char *encoded_str = String_val(encoded);
   const char *password = String_val(pwd);
   const size_t pwdlen = caml_string_length(pwd);
 
-  int ret = argon2id_verify(encoded_str, password, pwdlen);
+  int ret = passe_argon2id_verify(encoded_str, password, pwdlen);
 
   CAMLreturn(Val_int(ret));
 }
