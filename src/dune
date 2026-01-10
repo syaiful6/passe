@@ -1,21 +1,29 @@
+(include_subdirs unqualified)
+
 (library
  (foreign_stubs
   (language c)
-  (names bcrypt_stub blf bcrypt)
+  (names
+   bcrypt_stub
+   blf
+   bcrypt
+   argon2_stub
+   argon2
+   core
+   encoding
+   thread
+   ref
+   blake2b)
   (flags
    :standard
-   -W
+   -I./argon2/
    -Wall
    -Wbad-function-cast
    -Wcast-align
-   -Wcast-qual
    -Wstrict-prototypes
    -Wshadow
-   -Wundef
    -Wpointer-arith
-   -O2
-   -fomit-frame-pointer
-   -funroll-loops))
+   -Wno-type-limits))
  (name passe)
  (public_name passe)
  (synopsis "Password hashes implementation (bcrypt and argon2)")

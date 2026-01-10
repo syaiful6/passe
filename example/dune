@@ -1,0 +1,5 @@
+(executable
+ (name verify)
+ (enabled_if
+  (= %{profile} dev))
+ (libraries passe))

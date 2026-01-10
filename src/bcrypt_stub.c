@@ -17,7 +17,7 @@ CAMLprim value password_bcrypt_hashpass_stub(value key, value salt) {
   }
 
   result = caml_alloc_string(strlen(encrypted));
-  memcpy(String_val(result), encrypted, strlen(encrypted));
+  memcpy((char *)String_val(result), encrypted, strlen(encrypted));
   CAMLreturn(result);
 }
 
@@ -40,7 +40,7 @@ CAMLprim value password_encode_base64_stub(value src) {
 
   size_t encoded_len = strlen(dest);
   result = caml_alloc_string(encoded_len);
-  memcpy(String_val(result), dest, encoded_len);
+  memcpy((char *)String_val(result), dest, encoded_len);
   free(dest);
   CAMLreturn(result);
 }

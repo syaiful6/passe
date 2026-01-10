@@ -1,3 +1,3 @@
 # Passe - Password hash algorithm
 
-Passe is OCaml libray for hasing and verifyng password using Bcrypt and Argon2.
+Passe is an OCaml library for hashing and verifying passwords using Bcrypt and Argon2.
