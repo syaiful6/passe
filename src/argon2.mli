@@ -1,8 +1,3 @@
-type variant =
-  | Argon2d
-  | Argon2i
-  | Argon2id
-
 type error =
   [ `Invalid_time_cost of string
   | `Invalid_memory_cost of string

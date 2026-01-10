@@ -6,7 +6,7 @@ password hashes implementation (bcrypt and argon2)
   """
 maintainer: ["Syaiful Bahri <syai.bahri6@gmail.com>"]
 authors: ["Syaiful Bahri <syai.bahri6@gmail.com>"]
-license: "MIT"
+license: "ISC"
 homepage: "https://github.com/syaiful6/passe"
 doc: "https://syaiful6.github.io/passe/"
 bug-reports: "https://github.com/syaiful6/passe/issues"

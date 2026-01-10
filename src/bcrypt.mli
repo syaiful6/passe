@@ -1,14 +1,3 @@
-module Variant : sig
-  type t =
-    | A
-    | Y
-    | B
-
-  val pp : Format.formatter -> t -> unit
-  val of_raw_string : string -> t option
-  val to_string : t -> string
-end
-
 type error =
   [ `Hash_failure
   | `Invalid_cost of string

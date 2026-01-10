@@ -4,17 +4,6 @@ val hash_to_string : hash -> string
 val hash_of_string : string -> hash
 
 module Bcrypt : sig
-  module Variant : sig
-    type t =
-      | A
-      | Y
-      | B
-
-    val pp : Format.formatter -> t -> unit
-    val of_raw_string : string -> t option
-    val to_string : t -> string
-  end
-
   type error =
     [ `Hash_failure
     | `Invalid_cost of string
@@ -32,11 +21,6 @@ module Bcrypt : sig
 end
 
 module Argon2 : sig
-  type variant =
-    | Argon2d
-    | Argon2i
-    | Argon2id
-
   type error =
     [ `Invalid_time_cost of string
     | `Invalid_memory_cost of string
