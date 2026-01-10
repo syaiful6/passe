@@ -1,0 +1,22 @@
+(library
+ (foreign_stubs
+  (language c)
+  (names bcrypt_stub blf bcrypt)
+  (flags
+   :standard
+   -W
+   -Wall
+   -Wbad-function-cast
+   -Wcast-align
+   -Wcast-qual
+   -Wstrict-prototypes
+   -Wshadow
+   -Wundef
+   -Wpointer-arith
+   -O2
+   -fomit-frame-pointer
+   -funroll-loops))
+ (name passe)
+ (public_name passe)
+ (synopsis "Password hashes implementation (bcrypt and argon2)")
+ (libraries unix mirage-crypto mirage-crypto-rng mirage-crypto-rng.unix))
