@@ -78,7 +78,7 @@ test_case $VERIFY_ARGON2_PY verify "P@ssw0rd!" "$HASH"
 
 echo ""
 echo "Test 8: Special characters (Python→OCaml)"
-HASH=$($VERIFY_ARGON2_PY generate "€uro$£¥" 2 4096 1 | grep "Python generated hash:" | cut -d' ' -f4)
+HASH=$($VERIFY_ARGON2_PY generate '€uro$£¥' 2 4096 1 | grep "Python generated hash:" | cut -d' ' -f4)
 test_case $VERIFY_OCAML argon2 verify "€uro$£¥" "$HASH"
 
 echo ""
