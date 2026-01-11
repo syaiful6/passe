@@ -18,12 +18,13 @@
 
 (package
   (name passe)
-  (synopsis "password hashes implementation (bcrypt and argon2)")
+  (synopsis "Passe is library for hashing and verifying passwords using bcrypt and argon2 algorithms")
   (description "\
-  password hashes implementation (bcrypt and argon2)
+  Passe is library for hashing and verifying passwords using bcrypt and argon2 algorithms. It is designed to be simple, \
+  secure, and easy to use in OCaml applications\
   ")
   (depends
-    (ocaml (>= 5.2))
+    (ocaml (>= 4.14))
     dune
     mirage-crypto
     mirage-crypto-rng

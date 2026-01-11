@@ -18,6 +18,7 @@ mkShell {
   ];
   buildInputs =
     (with ocamlPackages; [
+      dune-release
       ocaml-lsp
       ocamlformat
       utop
