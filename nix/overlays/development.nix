@@ -16,6 +16,26 @@ in
       checks.formatting = treefmtEval.config.build.check (final.lib.cleanSource ../../.);
       treefmt = treefmtEval.config.build.wrapper;
       dev-shell = final'.callPackage ../packages/dev-shell.nix { };
+      docs = final.stdenv.mkDerivation {
+        name = "passe-docs";
+        src = final.lib.cleanSource ../../.;
+        nativeBuildInputs = with final.ocaml-ng.ocamlPackages_5_3; [
+          dune_3
+          ocaml
+          findlib
+        ];
+        buildInputs = with final.ocaml-ng.ocamlPackages_5_3; [
+          odoc
+          passe
+        ];
+        buildPhase = ''
+          dune build @doc
+        '';
+        installPhase = ''
+          mkdir -p $out
+          cp -r _build/default/_doc/_html/* $out/
+        '';
+      };
     }
   );
 }
