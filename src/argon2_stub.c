@@ -1,5 +1,6 @@
 #include "argon2/argon2.h"
 #include <caml/alloc.h>
+#include <caml/fail.h>
 #include <caml/memory.h>
 #include <caml/mlvalues.h>
 
@@ -26,9 +27,9 @@ CAMLprim value passe_argon2id_hash_encoded_with_salt_stub(
   /* Allocate buffer for encoded hash */
   char encoded[MAX_ENCODED_LEN];
 
-  int ret = passe_argon2id_hash_encoded(t, m, p, password, pwdlen, salt_bytes,
-                                        saltlen, hashlen, encoded,
-                                        MAX_ENCODED_LEN);
+  int ret =
+      passe_argon2id_hash_encoded(t, m, p, password, pwdlen, salt_bytes,
+                                  saltlen, hashlen, encoded, MAX_ENCODED_LEN);
 
   if (ret != ARGON2_OK) {
     result = caml_alloc_string(0);
@@ -42,6 +43,10 @@ CAMLprim value passe_argon2id_hash_encoded_with_salt_stub(
 /* Verify a password against an argon2id encoded hash */
 CAMLprim value passe_argon2id_verify_stub(value encoded, value pwd) {
   CAMLparam2(encoded, pwd);
+
+  if (!caml_string_is_c_safe(encoded)) {
+    caml_invalid_argument("argon2: encoded hash contains null bytes");
+  }
 
   const char *encoded_str = String_val(encoded);
   const char *password = String_val(pwd);

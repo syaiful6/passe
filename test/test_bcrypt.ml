@@ -148,6 +148,30 @@ let test_empty_password () =
     | Error e -> Alcotest.failf "Verification failed: %a" Bcrypt.pp_error e)
   | Error e -> Alcotest.failf "Hash generation failed: %a" Bcrypt.pp_error e
 
+let test_password_with_null_byte () =
+  let password = "pass\000word" in
+  match Bcrypt.hash ~cost:4 password with
+  | exception Invalid_argument msg ->
+    if String.sub msg 0 7 = "bcrypt:"
+    then ()
+    else Alcotest.failf "Expected bcrypt error but got: %s" msg
+  | Ok _ ->
+    Alcotest.fail
+      "Should have raised Invalid_argument for password with null byte"
+  | Error e -> Alcotest.failf "Wrong error type: %a" Bcrypt.pp_error e
+
+let test_verify_with_null_byte_in_salt () =
+  let salt = "$2a$04$UuTkLRZ\0006QofpDOlMz32Mu" in
+  let password = "password" in
+  match Bcrypt.hash_with_salt ~salt password with
+  | exception Invalid_argument msg ->
+    if String.sub msg 0 7 = "bcrypt:"
+    then ()
+    else Alcotest.failf "Expected bcrypt error but got: %s" msg
+  | Ok _ ->
+    Alcotest.fail "Should have raised Invalid_argument for salt with null byte"
+  | Error e -> Alcotest.failf "Wrong error type: %a" Bcrypt.pp_error e
+
 let tests =
   [ ( "Bcrypt verification"
     , [ Alcotest.test_case
@@ -189,5 +213,15 @@ let tests =
           `Quick
           test_invalid_hash_bad_prefix
       ; Alcotest.test_case "cost validation" `Quick test_cost_validation
+      ] )
+  ; ( "Bcrypt security"
+    , [ Alcotest.test_case
+          "password with null byte"
+          `Quick
+          test_password_with_null_byte
+      ; Alcotest.test_case
+          "salt with null byte"
+          `Quick
+          test_verify_with_null_byte_in_salt
       ] )
   ]

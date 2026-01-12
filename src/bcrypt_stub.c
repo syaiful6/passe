@@ -10,6 +10,14 @@ CAMLprim value passe_bcrypt_hashpass_stub(value key, value salt) {
   char encrypted[BCRYPT_HASHSPACE];
   int ret;
 
+  if (!caml_string_is_c_safe(key)) {
+    caml_invalid_argument("bcrypt: password contains null bytes");
+  }
+
+  if (!caml_string_is_c_safe(salt)) {
+    caml_invalid_argument("bcrypt: salt contains null bytes");
+  }
+
   ret = passe_bcrypt_hashpass(String_val(key), String_val(salt), encrypted,
                               sizeof(encrypted));
   if (ret != 0) {
