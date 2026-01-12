@@ -115,6 +115,18 @@ let test_different_params_different_hashes () =
   | Error e, _ | _, Error e ->
     Alcotest.failf "Hash generation failed: %a" Argon2.pp_error e
 
+let test_verify_with_null_byte_in_hash () =
+  let hash = hash_of_string "$argon2id$v=19\000$m=4096,t=2,p=1$invalid" in
+  let password = "password" in
+  match Argon2.verify ~hash password with
+  | exception Invalid_argument msg ->
+    if String.sub msg 0 7 = "argon2:"
+    then ()
+    else Alcotest.failf "Expected argon2 error but got: %s" msg
+  | Ok _ ->
+    Alcotest.fail "Should have raised Invalid_argument for hash with null byte"
+  | Error e -> Alcotest.failf "Wrong error type: %a" Argon2.pp_error e
+
 let tests =
   [ ( "Argon2 hashing"
     , [ Alcotest.test_case "hash and verify" `Quick test_hash_and_verify
@@ -133,5 +145,11 @@ let tests =
       ; Alcotest.test_case "invalid memory cost" `Quick test_invalid_memory_cost
       ; Alcotest.test_case "invalid parallelism" `Quick test_invalid_parallelism
       ; Alcotest.test_case "salt too short" `Quick test_salt_too_short
+      ] )
+  ; ( "Argon2 security"
+    , [ Alcotest.test_case
+          "verify with null byte in hash"
+          `Quick
+          test_verify_with_null_byte_in_hash
       ] )
   ]
