@@ -52,6 +52,7 @@ outputs
     ;
   inherit (pkgs.passe)
     dev-shell
+    docs
     ;
   checks.formatting = pkgs.passe.checks.formatting;
 }

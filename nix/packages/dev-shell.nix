@@ -21,6 +21,7 @@ mkShell {
       dune-release
       ocaml-lsp
       ocamlformat
+      odoc
       utop
     ])
     ++ [
