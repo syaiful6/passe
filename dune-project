@@ -1,7 +1,7 @@
 (lang dune 3.19)
 
 (name passe)
-(documentation "https://syaiful6.github.io/passe/")
+(documentation "https://syaiful6.github.io/passe/passe/Passe/index.html")
 
 (source
   (github syaiful6/passe))
