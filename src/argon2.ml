@@ -30,9 +30,9 @@ let default_params = { t_cost = 2; m_cost = 19456; parallelism = 1 }
 
 (* Minimum and maximum values *)
 let min_time_cost = 1
-let max_time_cost = 2147483647
+let max_time_cost = max_int
 let min_memory_cost = 8 (* 8 KiB minimum *)
-let max_memory_cost = 2147483647
+let max_memory_cost = max_int
 let min_parallelism = 1
 let max_parallelism = 16777215
 let min_salt_length = 8
