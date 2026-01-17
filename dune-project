@@ -27,6 +27,6 @@
     (ocaml (>= 4.14))
     dune
     mirage-crypto
-    mirage-crypto-rng
+    (mirage-crypto-rng (>= 1.2.0))
     (alcotest :with-test)
     (odoc :with-doc)))
