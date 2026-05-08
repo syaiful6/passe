@@ -81,12 +81,22 @@ let hash_with_salt ~salt ~params plain =
       then Error (`Hash_failure "Failed to generate hash")
       else Ok (Hash.of_string encoded)
 
+let hash_with_salt_exn ~salt ~params plain =
+  match hash_with_salt ~salt ~params plain with
+  | Ok h -> h
+  | Error e -> invalid_arg (Format.asprintf "%a" pp_error e)
+
 let hash ?(params = default_params) plain =
   match validate_params params with
   | Error e -> Error e
   | Ok () ->
     let salt = Crypto.generate 16 in
     hash_with_salt ~salt ~params plain
+
+let hash_exn ?(params = default_params) plain =
+  match hash ~params plain with
+  | Ok h -> h
+  | Error e -> invalid_arg (Format.asprintf "%a" pp_error e)
 
 let verify ~hash plain =
   let hash_str = Hash.to_string hash in
@@ -100,3 +110,8 @@ let verify ~hash plain =
     else if ret = -35
     then Ok false
     else Error `Verify_mismatch
+
+let verify_exn ~hash plain =
+  match verify ~hash plain with
+  | Ok b -> b
+  | Error e -> invalid_arg (Format.asprintf "%a" pp_error e)

@@ -94,6 +94,11 @@ let hash_with_salt ~salt plain =
       | Error e -> Error e)
     | None -> Error (`Invalid_prefix salt)
 
+let hash_with_salt_exn ~salt plain =
+  match hash_with_salt ~salt plain with
+  | Ok h -> h
+  | Error e -> invalid_arg (Format.asprintf "%a" pp_error e)
+
 let generate_salt cost variant =
   let cost_str = Printf.sprintf "%02d" cost in
   let salt_bytes = Crypto.generate 16 in
@@ -115,6 +120,11 @@ let hash ?(cost = default_cost) plain =
     Result.bind (generate_salt cost Variant.B) (fun salt ->
       hash_with_salt ~salt plain)
 
+let hash_exn ?(cost = default_cost) plain =
+  match hash ~cost plain with
+  | Ok h -> h
+  | Error e -> invalid_arg (Format.asprintf "%a" pp_error e)
+
 let verify ~hash plain =
   let hash_str = Hash.to_string hash in
   if String.length hash_str <> 60
@@ -135,3 +145,8 @@ let verify ~hash plain =
             Crypto.constant_time_equal (Hash.to_string computed_hash) hash_str
           in
           Ok is_equal)
+
+let verify_exn ~hash plain =
+  match verify ~hash plain with
+  | Ok b -> b
+  | Error e -> invalid_arg (Format.asprintf "%a" pp_error e)
