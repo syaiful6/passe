@@ -10,4 +10,4 @@ Initial release of passe, includes:
 
 ### 0.2.0 (Unreleased)
 
-- Add exn functions that raise exceptions instead of returning results
+- Add exn functions that raise exceptions instead of returning results [#11](https://github.com/syaiful6/passe/pull/11)
